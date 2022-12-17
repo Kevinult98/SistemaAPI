@@ -6,18 +6,40 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaAPI.Models;
+using SistemaAPI.Attributes;
+using SistemaAPI.Tools;
 
 namespace SistemaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiKey]
     public class UsuariosController : ControllerBase
     {
         private readonly SistemaDBContext _context;
 
+        private Crypto MyCrypto { get; set; }
+
         public UsuariosController(SistemaDBContext context)
         {
             _context = context;
+
+            MyCrypto = new Crypto();
+        }
+
+
+        // GET: api/Usuarios
+        [HttpGet("GetUsersByID")]
+        public async Task<ActionResult<IEnumerable<Usuario>>> GetUsersByID(int pUserID)
+        {
+            var NList = await _context.Usuarios.Where(e => e.Idusuario == pUserID).ToListAsync();
+
+            if (NList == null)
+            {
+                return NotFound();
+            }
+
+            return NList;
         }
 
         // GET: api/Usuarios
@@ -38,6 +60,19 @@ namespace SistemaAPI.Controllers
                 return NotFound();
             }
 
+            return usuario;
+        }
+
+        [HttpGet("ValidateUserLogin")]
+        public async Task<ActionResult<Usuario>> ValidateUserLogin(string pEmail, string pPassword)
+        {
+            string ApiLevelEncriptedPassword = MyCrypto.EncriptarEnUnSentido(pPassword);
+            var usuario = await _context.Usuarios.SingleOrDefaultAsync(e => e.Email == 
+                                                            pEmail && e.Clave == ApiLevelEncriptedPassword);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
             return usuario;
         }
 
@@ -77,6 +112,10 @@ namespace SistemaAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Usuario>> PostUsuario(Usuario usuario)
         {
+
+            string ApiLevelEncriptedPassword = MyCrypto.EncriptarEnUnSentido(usuario.Clave);
+
+            usuario.Clave = ApiLevelEncriptedPassword;
             _context.Usuarios.Add(usuario);
             await _context.SaveChangesAsync();
 
@@ -92,13 +131,11 @@ namespace SistemaAPI.Controllers
             {
                 return NotFound();
             }
-
             _context.Usuarios.Remove(usuario);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
-
         private bool UsuarioExists(int id)
         {
             return _context.Usuarios.Any(e => e.Idusuario == id);

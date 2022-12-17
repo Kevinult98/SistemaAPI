@@ -1,12 +1,23 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using SistemaAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace SistemaAPI
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -19,8 +30,10 @@ namespace SistemaAPI
         {
 
             services.AddControllers();
-            //agregar la cadena de conexión para el proyecto 
-            //TODO: Debemos guardar esta cadena por medio de usersecrets.json y no por medio de appsttings.json
+
+            //agregar la cadena de conexión para el proyecto. 
+            //TODO: debemos guardar esta cadena por medio de usersecrets.json
+            //y no por medio de appsettings.json
 
             var conn = @"SERVER=DESKTOP-7U6LGFC;DATABASE=SistemaDB;User Id=SistemaActividades; Password=12345";
 
@@ -46,7 +59,7 @@ namespace SistemaAPI
 
             app.UseAuthorization();
 
-            //TODO: Revisar si hace falta alguna configuración para uso de JWT
+            //TODO: revisar si hace falta alguna config para uso de JWT
 
             app.UseEndpoints(endpoints =>
             {

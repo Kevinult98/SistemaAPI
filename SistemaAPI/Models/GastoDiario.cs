@@ -13,10 +13,10 @@ namespace SistemaAPI.Models
         public int Idgasto { get; set; }
         public string Descripcion { get; set; } = null!;
         public string Foto { get; set; } = null!;
-        public int TipoGastoIdtipoGasto { get; set; }
+        public int? TipoGastoIdtipoGasto { get; set; }
         public float Total { get; set; }
 
-        public virtual TipoGasto TipoGastoIdtipoGastoNavigation { get; set; } = null!;
+        public virtual TipoGasto? TipoGastoIdtipoGastoNavigation { get; set; }
         public virtual ICollection<ActividadDiarium> ActividadDiaria { get; set; }
     }
 }

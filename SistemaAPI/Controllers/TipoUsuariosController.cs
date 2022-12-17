@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SistemaAPI.Attributes;
 using SistemaAPI.Models;
 
 namespace SistemaAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiKey]
     public class TipoUsuariosController : ControllerBase
     {
         private readonly SistemaDBContext _context;
@@ -25,6 +27,19 @@ namespace SistemaAPI.Controllers
         public async Task<ActionResult<IEnumerable<TipoUsuario>>> GetTipoUsuarios()
         {
             return await _context.TipoUsuarios.ToListAsync();
+        }
+
+
+        [HttpGet("TipoUsuarioList")]
+        public async Task<ActionResult<IEnumerable<TipoUsuario>>> GetTipoUserList()
+        {
+            List<TipoUsuario> list = await _context.TipoUsuarios.Where(u => u.Estado == true).ToListAsync();
+           
+            if (list == null)
+            {
+                return NotFound();
+            }
+            return list;
         }
 
         // GET: api/TipoUsuarios/5

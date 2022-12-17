@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SistemaAPI.Models;
+using SistemaAPI.Models.DTOs;
 
 namespace SistemaAPI.Controllers
 {
@@ -75,12 +76,26 @@ namespace SistemaAPI.Controllers
         // POST: api/ActividadDiariums
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ActividadDiarium>> PostActividadDiarium(ActividadDiarium actividadDiarium)
+        public async Task<ActionResult<ActividadDTO>> Ad(ActividadDTO actividadDiarium)
         {
-            _context.ActividadDiaria.Add(actividadDiarium);
+            ActividadDiarium nuevaActividad = new()
+            {
+                Fecha = DateTime.Now.Date,
+                HoraEntrada = actividadDiarium.HoraEntrada,
+                HoraSalida = actividadDiarium.HoraSalida,
+                Lugar = actividadDiarium.Lugar,
+                Descripcion = actividadDiarium.Descripcion,
+                TipoActividadIdtipo = actividadDiarium.TipoActividadIdtipo,
+                GastoDiarioIdgasto = actividadDiarium.GastoDiarioIdgasto,
+                VehiculoIdvehiculo = actividadDiarium.VehiculoIdvehiculo,
+                GastoDiarioIdgastoNavigation = null,
+                TipoActividadIdtipoNavigation = null,
+                VehiculoIdvehiculoNavigation = null
+            };
+            _context.ActividadDiaria.Add(nuevaActividad);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetActividadDiarium", new { id = actividadDiarium.Idactividad }, actividadDiarium);
+            return CreatedAtAction("GetActividadDiarium", new { id = nuevaActividad.Idactividad }, actividadDiarium);
         }
 
         // DELETE: api/ActividadDiariums/5

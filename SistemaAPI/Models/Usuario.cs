@@ -21,9 +21,10 @@ namespace SistemaAPI.Models
         public string? Direccion { get; set; }
         public string? CodigoRecuperacion { get; set; }
         public bool? Estado { get; set; }
-        public int IdTipoUsuario { get; set; }
+        public int? IdTipoUsuario { get; set; }
+        public string? NombreUsuario { get; set; }
 
-        public virtual TipoUsuario IdTipoUsuarioNavigation { get; set; } = null!;
+        public virtual TipoUsuario? IdTipoUsuarioNavigation { get; set; }
         public virtual ICollection<Bitacora> Bitacoras { get; set; }
         public virtual ICollection<Equipo> Equipos { get; set; }
 

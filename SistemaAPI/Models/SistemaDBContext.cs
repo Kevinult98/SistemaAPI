@@ -40,7 +40,7 @@ namespace SistemaAPI.Models
             modelBuilder.Entity<ActividadDiarium>(entity =>
             {
                 entity.HasKey(e => e.Idactividad)
-                    .HasName("PK__Activida__7E2A8B752B8C663C");
+                    .HasName("PK__Activida__7E2A8B752A9E0FA6");
 
                 entity.Property(e => e.Idactividad).HasColumnName("IDActividad");
 
@@ -50,18 +50,14 @@ namespace SistemaAPI.Models
                     .HasColumnName("descripcion");
 
                 entity.Property(e => e.Fecha)
-                    .HasColumnType("smalldatetime")
+                    .HasColumnType("date")
                     .HasColumnName("fecha");
 
                 entity.Property(e => e.GastoDiarioIdgasto).HasColumnName("GastoDiarioIDGasto");
 
-                entity.Property(e => e.HoraEntrada)
-                    .HasColumnType("smalldatetime")
-                    .HasColumnName("horaEntrada");
+                entity.Property(e => e.HoraEntrada).HasColumnName("horaEntrada");
 
-                entity.Property(e => e.HoraSalida)
-                    .HasColumnType("smalldatetime")
-                    .HasColumnName("horaSalida");
+                entity.Property(e => e.HoraSalida).HasColumnName("horaSalida");
 
                 entity.Property(e => e.Lugar)
                     .HasMaxLength(255)
@@ -87,7 +83,6 @@ namespace SistemaAPI.Models
                 entity.HasOne(d => d.VehiculoIdvehiculoNavigation)
                     .WithMany(p => p.ActividadDiaria)
                     .HasForeignKey(d => d.VehiculoIdvehiculo)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKActividadD142629");
 
                 entity.HasMany(d => d.UsuarioidUsuarios)
@@ -98,7 +93,7 @@ namespace SistemaAPI.Models
                         r => r.HasOne<ActividadDiarium>().WithMany().HasForeignKey("ActividadDiariaIdactividad").OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FKActividadD483793"),
                         j =>
                         {
-                            j.HasKey("ActividadDiariaIdactividad", "UsuarioidUsuario").HasName("PK__Activida__A639528710466939");
+                            j.HasKey("ActividadDiariaIdactividad", "UsuarioidUsuario").HasName("PK__Activida__A63952874AA05217");
 
                             j.ToTable("ActividadDiaria_Usuario");
 
@@ -109,7 +104,7 @@ namespace SistemaAPI.Models
             modelBuilder.Entity<Bitacora>(entity =>
             {
                 entity.HasKey(e => e.Idreporte)
-                    .HasName("PK__Bitacora__F69C2DEC834EFF56");
+                    .HasName("PK__Bitacora__F69C2DECEFD891AD");
 
                 entity.ToTable("Bitacora");
 
@@ -121,7 +116,7 @@ namespace SistemaAPI.Models
                     .HasColumnName("descripcion");
 
                 entity.Property(e => e.FechaInicio)
-                    .HasColumnType("smalldatetime")
+                    .HasColumnType("date")
                     .HasColumnName("fechaInicio");
 
                 entity.Property(e => e.Idusuario).HasColumnName("IDUsuario");
@@ -135,7 +130,7 @@ namespace SistemaAPI.Models
             modelBuilder.Entity<Equipo>(entity =>
             {
                 entity.HasKey(e => e.Idequipo)
-                    .HasName("PK__Equipo__034DC40FF1DEA80F");
+                    .HasName("PK__Equipo__034DC40FAEC36947");
 
                 entity.ToTable("Equipo");
 
@@ -157,14 +152,13 @@ namespace SistemaAPI.Models
                 entity.HasOne(d => d.UsuarioidUsuarioNavigation)
                     .WithMany(p => p.Equipos)
                     .HasForeignKey(d => d.UsuarioidUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKEquipo826731");
             });
 
             modelBuilder.Entity<GastoDiario>(entity =>
             {
                 entity.HasKey(e => e.Idgasto)
-                    .HasName("PK__GastoDia__D41CA0268EE11EA4");
+                    .HasName("PK__GastoDia__D41CA026FAB10F51");
 
                 entity.ToTable("GastoDiario");
 
@@ -187,14 +181,13 @@ namespace SistemaAPI.Models
                 entity.HasOne(d => d.TipoGastoIdtipoGastoNavigation)
                     .WithMany(p => p.GastoDiarios)
                     .HasForeignKey(d => d.TipoGastoIdtipoGasto)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKGastoDiari622898");
             });
 
             modelBuilder.Entity<TipoActividad>(entity =>
             {
                 entity.HasKey(e => e.Idtipo)
-                    .HasName("PK__TipoActi__BEB088A64851F4AA");
+                    .HasName("PK__TipoActi__BEB088A67EBA6ACA");
 
                 entity.ToTable("TipoActividad");
 
@@ -209,7 +202,7 @@ namespace SistemaAPI.Models
             modelBuilder.Entity<TipoGasto>(entity =>
             {
                 entity.HasKey(e => e.IdtipoGasto)
-                    .HasName("PK__TipoGast__63CAEA1FE90B24F9");
+                    .HasName("PK__TipoGast__63CAEA1FC9F346B4");
 
                 entity.ToTable("TipoGasto");
 
@@ -224,7 +217,7 @@ namespace SistemaAPI.Models
             modelBuilder.Entity<TipoUsuario>(entity =>
             {
                 entity.HasKey(e => e.IdTipoUsuario)
-                    .HasName("PK__TipoUsua__03006BFF159FCCFE");
+                    .HasName("PK__TipoUsua__03006BFF90861D25");
 
                 entity.ToTable("TipoUsuario");
 
@@ -244,7 +237,7 @@ namespace SistemaAPI.Models
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.Idusuario)
-                    .HasName("PK__Usuario__5231116972FBD01F");
+                    .HasName("PK__Usuario__52311169C7AB46BD");
 
                 entity.ToTable("Usuario");
 
@@ -287,6 +280,10 @@ namespace SistemaAPI.Models
                     .IsUnicode(false)
                     .HasColumnName("nombreCompleto");
 
+                entity.Property(e => e.NombreUsuario)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.NumeroTelefono)
                     .HasMaxLength(255)
                     .IsUnicode(false)
@@ -295,14 +292,13 @@ namespace SistemaAPI.Models
                 entity.HasOne(d => d.IdTipoUsuarioNavigation)
                     .WithMany(p => p.Usuarios)
                     .HasForeignKey(d => d.IdTipoUsuario)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKUsuario557876");
             });
 
             modelBuilder.Entity<Vehiculo>(entity =>
             {
                 entity.HasKey(e => e.Idvehiculo)
-                    .HasName("PK__Vehiculo__CA7F8687CD69E44B");
+                    .HasName("PK__Vehiculo__CA7F86878B85DED6");
 
                 entity.ToTable("Vehiculo");
 
